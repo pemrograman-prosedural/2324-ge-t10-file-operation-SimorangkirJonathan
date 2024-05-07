@@ -3,27 +3,42 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct dorm_t create_dormitory_repository(char *input)
+struct dorm_t create_dorm_repository(char *input)
 {
-  struct dorm_t dorm;
-  strcpy(dorm.dorm_name, strtok(input, "|"));
-  dorm.dorm_capacity = atoi(strtok(NULL, "|"));
-  char *gender = strtok(NULL, "|");
-  dorm.dorm_gender = (strcmp(gender, "male") == 0) ? GENDER_MALE : GENDER_FEMALE;
-  dorm.num_residents = 0;
-  return dorm;
+  struct dorm_t drm;
+  strcpy(drm.name, strtok(input, "|"));
+  drm.capacity = atoi(strtok(NULL, "|"));
+  char *yoru = strtok(NULL, "|");
+  if (strcmp(yoru, "male") == 0)
+  {
+    drm.gender = GENDER_MALE;
+  }
+  else if (strcmp(yoru, "female") == 0)
+  {
+    drm.gender = GENDER_FEMALE;
+  }
+  drm.residents_num = 0;
+  return drm;
 }
 
 struct student_t create_student_repository(char *input)
 {
-  struct student_t student;
-  strcpy(student.id, strtok(input, "|"));
-  strcpy(student.name, strtok(NULL, "|"));
-  strcpy(student.year, strtok(NULL, "|"));
-  char *gender = strtok(NULL, "|");
-  student.gender = (strcmp(gender, "male") == 0) ? GENDER_MALE : GENDER_FEMALE;
-  student.dorm = malloc(sizeof(struct dorm_t));
-  strcpy(student.dorm->dorm_name, "unassigned");
+  struct student_t mhs;
+  strcpy(mhs.id, strtok(input, "|"));
+  strcpy(mhs.name, strtok(NULL, "|"));
+  strcpy(mhs.year, strtok(NULL, "|"));
+  char *yoru = strtok(NULL, "|");
+  if (strcmp(yoru, "male") == 0)
+  {
+    mhs.gender = GENDER_MALE;
+  }
+  else if (strcmp(yoru, "female") == 0)
+  {
+    mhs.gender = GENDER_FEMALE;
+  }
+  mhs.dorm = NULL;
+  mhs.dorm = malloc(1 * sizeof(struct dorm_t));
+  strcpy(mhs.dorm->name, "unassigned");
 
-  return student;
+  return mhs;
 }

@@ -5,33 +5,58 @@
 
 struct dorm_t create_dorm(char *input)
 {
-  struct dorm_t dorm;
-  strcpy(dorm.name, strtok(input, "#"));
-  dorm.capacity = atoi(strtok(NULL, "#"));
-  char *gender = strtok(NULL, "#");
-  dorm.gender = (strcmp(gender, "male") == 0) ? GENDER_MALE : GENDER_FEMALE;
-  dorm.residents_num = 0;
-  return dorm;
-}
-
-void print_dorm(struct dorm_t dorm)
-{
-  printf("%s|%hu|%s\n", dorm.name, dorm.capacity, (dorm.gender == GENDER_MALE) ? "male" : "female");
-}
-
-void print_dorm_detail(struct dorm_t dorm)
-{
-  printf("%s|%hu|%s|%hu\n", dorm.name, dorm.capacity, (dorm.gender == GENDER_MALE) ? "male" : "female", dorm.residents_num);
-}
-
-int find_dorm(char *dorm_name, int dorm_count, struct dorm_t *dorms)
-{
-  for (int i = 0; i < dorm_count; i++)
+  struct dorm_t drm;
+  strcpy(drm.name, strtok(NULL, "#"));
+  drm.capacity = atoi(strtok(NULL, "#"));
+  char *gend = strtok(NULL, "#");
+  if (strcmp(gend, "male") == 0)
   {
-    if (strcmp(dorm_name, dorms[i].name) == 0)
+    drm.gender = GENDER_MALE;
+  }
+  else if (strcmp(gend, "female") == 0)
+  {
+    drm.gender = GENDER_FEMALE;
+  }
+  drm.residents_num=0;
+  return drm;
+}
+
+void print_dorm(struct dorm_t drm)
+{
+  printf("%s|%hu|", drm.name, drm.capacity);
+  if (drm.gender == GENDER_MALE)
+  {
+    printf("male\n");
+  }
+  else if (drm.gender == GENDER_FEMALE)
+  {
+    printf("female\n");
+  }
+}
+
+void print_dorm_detail(struct dorm_t drm)
+{
+  printf("%s|%hu|", drm.name, drm.capacity);
+  if (drm.gender == GENDER_MALE)
+  {
+    printf("male|");
+  }
+  else if (drm.gender == GENDER_FEMALE)
+  {
+    printf("female|");
+  }
+  printf("%hu\n", drm.residents_num);
+}
+
+int find_dorm(char *asrama, int jmlhdrm, struct dorm_t *drm)
+{
+  int find_dorm;
+  for (int m = 0; m < jmlhdrm; m++)
+  {
+    if (strcmp(asrama, drm[m].name)==0)
     {
-      return i;
+      find_dorm=m;
     }
   }
-  return -1;
+  return find_dorm;
 }

@@ -12,18 +12,18 @@
 
 struct student_t
 {
-    char student_id[12];
-    char student_name[40];
-    char enrollment_year[5];
-    enum gender_t student_gender;
-    struct dorm_t *assigned_dorm;
+    char id[12];
+    char name[40];
+    char year[5];
+    enum gender_t gender;
+    struct dorm_t *dorm;
 };
 
-struct student_t create_student_record(char *input);
-void display_student(struct student_t student);
-void display_student_detail(struct student_t student);
-void assign_student_to_dorm(struct dorm_t *dorm, struct student_t *student, char *student_id, char *dorm_name, int student_count, int dorm_count, int find_student_id(char *student_id, int student_count, struct student_t *students), int locate_dorm(char *dorm_name, int dorm_count, struct dorm_t *dorms));
-int find_student_id(char *student_id, int student_count, struct student_t *students);
-void transfer_student(struct dorm_t *dorm, struct student_t *student, char *student_id, char *dorm_name, int student_count, int dorm_count, int find_student_id(char *student_id, int student_count, struct student_t *students), int locate_dorm(char *dorm_name, int dorm_count, struct dorm_t *dorms));
-void check_dorm_empty(char *dorm_name, int student_count, int dorm_count, struct student_t *students, struct dorm_t *dorms, int locate_dorm(char *dorm_name, int dorm_count, struct dorm_t *dorms));
+struct student_t create_student(char *input);
+void print_student(struct student_t mhs);
+void print_student_detail(struct student_t mhs);
+void assign_student(struct dorm_t *drm, struct student_t *mhs, char *nim, char *asrama, int zstd, int zdrm, int find_id(char *nim, int zstd, struct student_t *mhs), int find_dorm(char *asrama, int zdrm, struct dorm_t *drm));
+int find_id(char *nim, int zstd, struct student_t *mhs);
+void move_student(struct dorm_t *drm, struct student_t *mhs, char *nim, char *asrama, int zstd, int zdrm, int find_id(char *nim, int zstd, struct student_t *mhs), int find_dorm(char *asrama, int zdrm, struct dorm_t *drm));
+void dorm_empty(char *asrama, int zstd, int zdrm, struct student_t *mhs, struct dorm_t *drm, int find_dorm(char *asrama, int zdrm, struct dorm_t *drm));
 #endif

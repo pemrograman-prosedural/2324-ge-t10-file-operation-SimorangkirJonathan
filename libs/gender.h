@@ -7,10 +7,10 @@
  *
  */
 
-typedef enum gender_t
+enum gender_t
 {
     GENDER_MALE,
     GENDER_FEMALE
-} gender_t;
+};
 
 #endif

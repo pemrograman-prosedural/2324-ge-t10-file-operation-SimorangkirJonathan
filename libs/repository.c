@@ -1,26 +1,44 @@
 #include "repository.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-/**
- * @brief Define the complete function definition here. Be sure to enlist the prototype of each function
- * defined here in the corresponding header file.
- *
- */
-
-short line_count(char* fileName)
+struct dorm_t create_dorm_repository(char *input)
 {
-    fileName[strcspn(fileName, "\n")] = 0;
-    FILE *ptr = fopen(fileName,"r");
-    short counter = 0;
-    char chr = getc(ptr);
+  struct dorm_t drm;
+  strcpy(drm.name, strtok(input, "|"));
+  drm.capacity = atoi(strtok(NULL, "|"));
+  char *yoru = strtok(NULL, "|");
+  if (strcmp(yoru, "male") == 0)
+  {
+    drm.gender = GENDER_MALE;
+  }
+  else if (strcmp(yoru, "female") == 0)
+  {
+    drm.gender = GENDER_FEMALE;
+  }
+  drm.residents_num = 0;
+  return drm;
+}
 
-    while (chr != EOF)
-    {
-        if (chr == '\n') { counter++; }
-        chr = getc(ptr);
-    }
+struct student_t create_student_repository(char *input)
+{
+  struct student_t mhs;
+  strcpy(mhs.id, strtok(input, "|"));
+  strcpy(mhs.name, strtok(NULL, "|"));
+  strcpy(mhs.year, strtok(NULL, "|"));
+  char *yoru = strtok(NULL, "|");
+  if (strcmp(yoru, "male") == 0)
+  {
+    mhs.gender = GENDER_MALE;
+  }
+  else if (strcmp(yoru, "female") == 0)
+  {
+    mhs.gender = GENDER_FEMALE;
+  }
+  mhs.dorm = NULL;
+  mhs.dorm = malloc(1 * sizeof(struct dorm_t));
+  strcpy(mhs.dorm->name, "unassigned");
 
-    fclose(ptr);
-    return counter;
+  return mhs;
 }

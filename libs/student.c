@@ -1,110 +1,112 @@
 #include "student.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-struct student_t create_student(char *input)
-{
-  struct student_t mhs;
-  strcpy(mhs.id, strtok(NULL, "#"));
-  strcpy(mhs.name, strtok(NULL, "#"));
-  strcpy(mhs.year, strtok(NULL, "#"));
-  char *yoru = strtok(NULL, "#");
-  if (strcmp(yoru, "male") == 0)
-  {
-    mhs.gender = GENDER_MALE;
-  }
-  else if (strcmp(yoru, "female") == 0)
-  {
-    mhs.gender = GENDER_FEMALE;
-  }
-  mhs.dorm = NULL;
-  mhs.dorm = malloc(1 * sizeof(struct dorm_t));
-  strcpy(mhs.dorm->name, "unassigned");
+/**
+ * @brief Define the complete function definition here. Be sure to enlist the prototype of each function
+ * defined here in the corresponding header file.
+ *
+ */
 
-  return mhs;
+Student create_student ( char *_id, char *_name, char *_year, gender_t _gender )
+{
+    Student student_;
+
+    strcpy( student_.id, _id );
+    strcpy( student_.name, _name );
+    strcpy( student_.year, _year );
+    student_.gender = _gender;
+    student_.dorm   = NULL;
+
+    return student_;
 }
 
-void print_student(struct student_t mhs)
+void printStudent ( Student student_to_print )
 {
-  printf("%s|%s|%s|", mhs.id, mhs.name, mhs.year);
-  if (mhs.gender == GENDER_MALE)
-  {
-    printf("male\n");
-  }
-  else if (mhs.gender == GENDER_FEMALE)
-  {
-    printf("female\n");
-  }
-}
+    if ( strcmp(student_to_print.name, "") != 0 ) {
+        printf( "%s|%s|%s", student_to_print.id,
+                            student_to_print.name,
+                            student_to_print.year );
 
-void print_student_detail(struct student_t mhs)
-{
-  printf("%s|%s|%s|", mhs.id, mhs.name, mhs.year);
-  if (mhs.gender == GENDER_MALE)
-  {
-    printf("male|");
-  }
-  else if (mhs.gender == GENDER_FEMALE)
-  {
-    printf("female|");
-  }
-  printf("%s\n", mhs.dorm->name);
-}
-
-int find_id(char *nim, int zstd, struct student_t *mhs)
-{
-  int find_id = -1;
-  for (int m = 0; m < zstd; m++)
-  {
-    if (strcmp(nim, mhs[m].id) == 0)
-    {
-      find_id = m;
+        switch ( student_to_print.gender )
+        {
+            case GENDER_MALE:
+                puts("|male");
+                break;
+            
+            case GENDER_FEMALE:
+                puts("|female");
+                break;
+        }
     }
-  }
-  return find_id;
+    fflush(stdout);
 }
 
-void assign_student(struct dorm_t *drm, struct student_t *mhs, char *nim, char *asrama, int zstd, int zdrm, int find_id(char *nim, int zstd, struct student_t *mhs), int find_dorm(char *asrama, int zdrm, struct dorm_t *drm))
-{
-  int maha = find_id(nim, zstd, mhs);
-  int asra = find_dorm(asrama, zdrm, drm);
-  if (maha >= 0 && asra >= 0 && drm[asra].capacity != drm[asra].residents_num && mhs[maha].gender == drm[asra].gender)
-  {
-    strcpy(mhs[maha].dorm->name, asrama);
-    drm[asra].residents_num++;
-  }
-}
-
-void move_student(struct dorm_t *drm, struct student_t *mhs, char *nim, char *asrama, int zstd, int zdrm, int find_id(char *nim, int zstd, struct student_t *mhs), int find_dorm(char *asrama, int zdrm, struct dorm_t *drm))
-{
-  int maha = find_id(nim, zstd, mhs);
-  char before[20];
-  strcpy(before, mhs[maha].dorm->name);
-  int asrabefore = find_dorm(before, zdrm, drm);
-  int asraafter = find_dorm(asrama, zdrm, drm);
-  if (maha >= 0 && asrabefore >= 0 && asraafter >= 0 && drm[asraafter].capacity != drm[asraafter].residents_num && mhs[maha].gender == drm[asraafter].gender)
-  {
-    drm[asrabefore].residents_num--;
-    strcpy(mhs[maha].dorm->name, asrama);
-    drm[asraafter].residents_num++;
-  }
-  else if (maha >= 0 && asrabefore == -1 && asraafter >= 0 && drm[asraafter].capacity != drm[asraafter].residents_num && mhs[maha].gender == drm[asraafter].gender)
-  {
-    strcpy(mhs[maha].dorm->name, asrama);
-    drm[asraafter].residents_num++;
-  }
-}
-
-void dorm_empty(char *asrama, int zstd, int zdrm, struct student_t *mhs, struct dorm_t *drm, int find_dorm(char *asrama, int zdrm, struct dorm_t *drm))
-{
-  int asra = find_dorm(asrama, zdrm, drm);
-  for (int m = 0; m < zstd; m++)
-  {
-    if (strcmp(asrama, mhs[m].dorm->name) == 0)
-    {
-      strcpy(mhs[m].dorm->name, "unassigned");
-      drm[asra].residents_num--;
+short findStudentIdx ( char *_id, Student *list, int length ) {
+    for ( short i=0; i<length; i++ ) {
+        if ( strcmp(list[i].id, _id) == 0 )
+            return i;
     }
-  }
+
+    return -1;
+}
+
+void assign ( Student *student_, Dorm *dorm_ )
+{
+    if ( student_->gender == dorm_->gender && dorm_->residents_num < dorm_->capacity )
+    {
+        student_->dorm = dorm_;
+        dorm_->residents_num++;
+    }
+    else {
+        student_->dorm = NULL;
+    }
+}
+
+void unassign ( Student *student_, Dorm* dorm_ )
+{
+    if ( student_->dorm == dorm_ ) {
+        student_->dorm = NULL;
+        dorm_->residents_num--;
+    }
+}
+
+void moveStudent ( Student *migrant, Dorm *newResidence , Dorm *oldResidence )
+{
+    if ( migrant->dorm != NULL ) {
+        unassign ( migrant, oldResidence );
+    }
+    assign ( migrant, newResidence );
+}
+
+void printStudentDetails ( Student student_to_print )
+{
+    if ( strcmp(student_to_print.name, "") != 0 ) {
+        printf( "%s|%s|%s", student_to_print.id,
+                            student_to_print.name,
+                            student_to_print.year );
+
+        switch ( student_to_print.gender ) {
+            case GENDER_MALE:
+                ( student_to_print.dorm != NULL ) ?
+                    printf("|male|%s\n", student_to_print.dorm->name) : printf("|male|unassigned\n");
+                break;
+            
+            case GENDER_FEMALE:
+                ( student_to_print.dorm != NULL ) ?
+                    printf("|female|%s\n", student_to_print.dorm->name) : printf("|female|unassigned\n");
+                break;
+        }
+    }
+    fflush( stdout );
+}
+
+void emptyDorm ( Dorm* residence, Student** potentialResidents, unsigned short totalPR )
+{
+    for (size_t i=0; i<totalPR; i++) {
+        if (potentialResidents[i]->dorm != NULL) {
+            if (potentialResidents[i]->dorm == residence)
+                unassign(potentialResidents[i], residence);
+        }
+    }
 }

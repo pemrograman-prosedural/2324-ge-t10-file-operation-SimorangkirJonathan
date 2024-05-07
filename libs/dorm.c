@@ -1,62 +1,54 @@
 #include "dorm.h"
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-struct dorm_t create_dorm(char *input)
+/**
+ * @brief Define the complete function definition here. Be sure to enlist the prototype of each function
+ * defined here in the corresponding header file.
+ *
+ */
+
+Dorm create_dorm ( char *_name, unsigned short _capacity, gender_t _gender )
 {
-  struct dorm_t drm;
-  strcpy(drm.name, strtok(NULL, "#"));
-  drm.capacity = atoi(strtok(NULL, "#"));
-  char *gend = strtok(NULL, "#");
-  if (strcmp(gend, "male") == 0)
-  {
-    drm.gender = GENDER_MALE;
-  }
-  else if (strcmp(gend, "female") == 0)
-  {
-    drm.gender = GENDER_FEMALE;
-  }
-  drm.residents_num=0;
-  return drm;
+    Dorm dorm_;
+
+    dorm_.residents_num = 0;
+    strcpy( dorm_.name, _name );
+    dorm_.capacity = _capacity;
+    dorm_.gender   = _gender;
+
+    return dorm_;
 }
 
-void print_dorm(struct dorm_t drm)
+void print_dorm ( Dorm dorm_to_print )
 {
-  printf("%s|%hu|", drm.name, drm.capacity);
-  if (drm.gender == GENDER_MALE)
-  {
-    printf("male\n");
-  }
-  else if (drm.gender == GENDER_FEMALE)
-  {
-    printf("female\n");
-  }
+    printf( "%s", dorm_to_print.name );
+
+    ( dorm_to_print.gender == GENDER_MALE )?
+        printf( "|%d|male\n", dorm_to_print.capacity ):
+        printf( "|%d|female\n", dorm_to_print.capacity );
+
+    fflush( stdout );    
 }
 
-void print_dorm_detail(struct dorm_t drm)
+void printDormDetails ( Dorm dorm_to_print )
 {
-  printf("%s|%hu|", drm.name, drm.capacity);
-  if (drm.gender == GENDER_MALE)
-  {
-    printf("male|");
-  }
-  else if (drm.gender == GENDER_FEMALE)
-  {
-    printf("female|");
-  }
-  printf("%hu\n", drm.residents_num);
+    printf( "%s|%d", dorm_to_print.name, dorm_to_print.capacity );
+
+    ( dorm_to_print.gender == GENDER_MALE )?
+        printf( "|male" ) : printf( "|female" );
+    
+    printf( "|%d\n", dorm_to_print.residents_num );
+
+    fflush( stdout );  
 }
 
-int find_dorm(char *asrama, int jmlhdrm, struct dorm_t *drm)
+short findDormIdx ( char* _name, Dorm *list, int length )
 {
-  int find_dorm;
-  for (int m = 0; m < jmlhdrm; m++)
-  {
-    if (strcmp(asrama, drm[m].name)==0)
-    {
-      find_dorm=m;
+    for ( short i=0; i<length; i++ ) {
+        if ( strcmp( list[i].name, _name ) == 0 )
+            return i;
     }
-  }
-  return find_dorm;
+
+    return -1;
 }

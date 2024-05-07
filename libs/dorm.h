@@ -9,16 +9,17 @@
  *
  */
 
-struct dorm_t
+typedef struct dorm_t
 {
   char name[20];
   unsigned short capacity;
-  enum gender_t gender;
+  gender_t gender;
   unsigned short residents_num;
-};
+} Dorm;
 
-struct dorm_t create_dorm(char *input);
-void print_dorm(struct dorm_t drm);
-void print_dorm_detail(struct dorm_t drm);
-int find_dorm(char *asrama, int jmlhdrm, struct dorm_t *drm);
+Dorm create_dorm ( char *_name, unsigned short _capacity, gender_t _gender );
+short findDormIdx ( char* _name, Dorm *list, int length );
+void print_dorm ( Dorm dorm_to_print );
+void printDormDetails ( Dorm dorm_to_print );
+
 #endif

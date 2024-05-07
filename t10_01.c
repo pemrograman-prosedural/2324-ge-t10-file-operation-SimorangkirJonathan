@@ -2,201 +2,136 @@
 // 12S23045 - Chintya Reginauli rajagukguk
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "./libs/dorm.h"
 #include "./libs/student.h"
 #include "./libs/repository.h"
-#include "./libs/student.h"
 
 int main(int _argc, char **_argv)
 {
-    struct dorm_t *dorms = malloc(120 * sizeof(struct dorm_t));
-    struct student_t *students = malloc(120 * sizeof(struct student_t));
-    char masukan[100];
-    char id[12];
-    char student_name[30];
-    char year[5];
-    char dorm_name[15];
-    unsigned short capacity;
-    char *kata;
-    int index_student, index_dorm;
-    int x = 0, f = 0;
-    return 0;
+  char input[75];
+  int zdrm = 0;
+  int size = 0;
+  struct dorm_t *drm = malloc(size * sizeof(struct dorm_t));
+  int zstd = 0;
+  int sizee = 0;
+  struct student_t *mhs = malloc(sizee * sizeof(struct student_t));
+  char *token;
 
-    do
+  FILE *mahasiswa;
+  FILE *asrama;
+  asrama = fopen("storage/dorm-repository.txt", "r");
+  mahasiswa = fopen("storage/student-repository.txt", "r");
+
+  while (1)
+  {
+    size++;
+    drm = realloc(drm, size * sizeof(struct dorm_t));
+    fscanf(asrama, "%[^\n]\n", input);
+    drm[zdrm] = create_dorm_repository(input);
+    zdrm++;
+    if (feof(asrama))
     {
-        fflush(stdin);
-        masukan[0] = '\0';
-        int c = 0;
-        while (1)
-        {
-            char x = getchar();
-            if (x == '\r')
-            {
-                continue;
-            }
-            if (x == '\n')
-            {
-                break;
-            }
-            masukan[c] = x;
-            masukan[++c] = '\0';
-        }
+      break;
+    }
+  }
 
-        kata = strtok(masukan, "#");
-        if(strcmp(kata, "---") == 0)
-        {
-            break;
-        } 
-        else if (strcmp(kata, "student-add")==0)
-        {
-            kata = strtok(NULL, "#");
-            strcpy(id, kata);
-            kata = strtok(NULL, "#");
-            strcpy(student_name, kata);
-            kata = strtok(NULL, "#");
-            strcpy(year, kata);
-            kata = strtok(NULL, "#");
-            if (strcmp(kata, "male") == 0)
-            {
-                students[x] = create_student(id, student_name, year, GENDER_MALE);
-            } 
-            else if (strcmp(kata, "female") == 0)
-            {
-                students[x] = create_student(id, student_name, year, GENDER_FEMALE);
-            }
-            x++;
-        } 
-        else if (strcmp(kata, "student-print-all") == 0) 
-        {
-            print_students(students, x);
-        } 
-        else if (strcmp(kata, "student-print-all-detail") == 0) 
-        {
-            print_students_detail(students, x);
-        } 
-        else if (strcmp(kata, "dorm-print-all-detail") == 0) 
-        {
-            print_dorm(dorms, f);
-        } 
-        else if (strcmp(masukan, "dorm-add") == 0)
-        {
-            kata = strtok(NULL, "#");
-            strcpy(dorm_name, kata);
-            kata = strtok(NULL, "#");
-            capacity = atoi(kata);
-            kata = strtok(NULL, "#");
+  while (1)
+  {
+    sizee++;
+    mhs = realloc(mhs, sizee * sizeof(struct student_t));
+    fscanf(mahasiswa, "%[^\n]\n", input);
+    mhs[zstd] = create_student_repository(input);
+    zstd++;
+    if (feof(mahasiswa))
+    {
+      break;
+    }
+  }
 
-            if (strcmp(kata, "male")==0)
-            {
-                dorms[f] = create_dorm(dorm_name, capacity, GENDER_MALE);
-            } 
-            else if (strcmp(kata, "female")==0)
-            {
-                dorms[f] = create_dorm(dorm_name, capacity, GENDER_FEMALE);
-            }
-            f++;
-        } 
-        else if (strcmp(kata, "assign-student")==0) 
-        {
-            kata = strtok(NULL, "#");
-            strcpy(id, kata);
-            kata = strtok(NULL, "#");
-            strcpy(dorm_name, kata);
-            index_student = -1;
-            index_dorm = -1;
+  while (1 == 1)
+  {
+    fgets(input, sizeof input, stdin);
+    while (1)
+    {
+      if (input[strlen(input) - 1] == '\n' || input[strlen(input) - 1] == '\r')
+      {
+        input[strlen(input) - 1] = '\0';
+      }
+      else
+      {
+        break;
+      }
+    }
 
-            for (int i = 0; i < x; i++)
-            {
-                if(strcmp(students[i].id, id)==0)
-                {
-                    index_student = i;
-                    break;
-                }
-            }
-            for (int i = 0; i < x; i++)
-            {
-                if(strcmp(dorms[i].name, dorm_name)==0)
-                {
-                    index_dorm = i;
-                    break;
-                }
-            }
-            if (index_student!=-1 && index_dorm!=-1)
-            {
-                assign_student(&students[index_student], &dorms[index_dorm], id, dorm_name);
-            }
-        } 
-        else if (strcmp(kata, "move-student") == 0) 
-        {
-            kata = strtok(NULL, "#");
-            strcpy(id, kata);
-            kata = strtok(NULL, "#");
-            strcpy(dorm_name, kata);
-            index_student = -1;
-            index_dorm = -1;
+    token = strtok(input, "#");
+    if (strcmp(token, "---") == 0)
+    {
+      break;
+    }
+    else if (strcmp(token, "dorm-add") == 0)
+    {
+      size++;
+      drm = realloc(drm, size * sizeof(struct dorm_t));
+      drm[zdrm] = create_dorm(input);
+      zdrm++;
+    }
+    else if (strcmp(token, "dorm-print-all") == 0)
+    {
+      for (int m = 0; m < zdrm; m++)
+      {
+        print_dorm(drm[m]);
+      }
+    }
+    else if (strcmp(token, "dorm-print-all-detail") == 0)
+    {
+      for (int m = 0; m < zdrm; m++)
+      {
+        print_dorm_detail(drm[m]);
+      }
+    }
+    else if (strcmp(token, "student-add") == 0)
+    {
+      sizee++;
+      mhs = realloc(mhs, sizee * sizeof(struct student_t));
+      mhs[zstd] = create_student(input);
+      zstd++;
+    }
+    else if (strcmp(token, "student-print-all") == 0)
+    {
+      for (int m = 0; m < zstd; m++)
+      {
+        print_student(mhs[m]);
+      }
+    }
+    else if (strcmp(token, "student-print-all-detail") == 0)
+    {
+      for (int m = 0; m < zstd; m++)
+      {
+        print_student_detail(mhs[m]);
+      }
+    }
+    else if (strcmp(token, "assign-student") == 0)
+    {
+      char *nim = strtok(NULL, "#");
+      char *asrama = strtok(NULL, "#");
+      assign_student(drm, mhs, nim, asrama, zstd, zdrm, find_id, find_dorm);
+    }
+    else if (strcmp(token, "move-student") == 0)
+    {
+      char *nim = strtok(NULL, "#");
+      char *asrama = strtok(NULL, "#");
+      move_student(drm, mhs, nim, asrama, zstd, zdrm, find_id, find_dorm);
+    }
+    else if (strcmp(token, "dorm-empty") == 0)
+    {
+      char *asrama = strtok(NULL, "#");
+      dorm_empty(asrama, zstd, zdrm, mhs, drm, find_dorm);
+    }
+  }
+  free(mhs);
+  free(drm);
 
-            for (int i = 0; i < x; i++)
-            {
-                if(strcmp(students[i].id, id) == 0)
-                {
-                    index_student = i;
-                    break;
-                }
-            }
-            for (int i = 0; i < f; i++)
-            {
-                if(strcmp(dorms[i].name, dorm_name) == 0)
-                {
-                    index_dorm = i;
-                    break;
-                }
-            }
-            if (index_student != -1 && index_dorm != -1)
-            {
-                if (students[index_student].dorm == NULL)
-                {
-                    assign_student(&students[index_student], &dorms[index_dorm], id, dorm_name);
-                }
-                 else 
-                 {
-                    for (int i = 0; i < f; i++)
-                    {
-                        if(strcmp(students[index_student].dorm->name, dorms[i].name)==0)
-                        {
-                            move_student(&students[index_student], &dorms[index_dorm], &dorms[i], id, dorm_name);
-                            break;
-                        }
-                    }
-                }
-            }
-        } 
-        else if (strcmp(kata, "dorm-empty")==0)
-        {
-            kata = strtok(NULL, "#");
-            strcpy(dorm_name, kata);
-            index_dorm = -1;
-            for (int i = 0; i < f; i++)
-            {
-                if(strcmp(dorms[i].name, dorm_name)==0)
-                {
-                    index_dorm = i;
-                    break;
-                }
-            }
-            if (index_dorm !=-1)
-            {
-                for (int i = 0; i < x; i++)
-                {
-                    if (students[i].dorm==NULL){
-                        continue;
-                    } else if(strcmp(students[i].dorm->name, dorms[index_dorm].name)==0){
-                        unassign_student(&students[i], &dorms[index_dorm]);
-                    }
-                }
-            }
-        }
-    } while (1 == 1);
-    free(students);
-    free(dorms);
-    return 0;
+  return 0;
 }

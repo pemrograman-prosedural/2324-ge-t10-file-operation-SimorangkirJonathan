@@ -9,8 +9,8 @@
 
 enum gender_t
 {
-    male,
-    female
+    GENDER_MALE,
+    GENDER_FEMALE
 };
 
 #endif

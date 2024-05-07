@@ -18,6 +18,7 @@ struct dorm_t
 };
 
 struct dorm_t create_dorm(char *_name, unsigned short _capacity, enum gender_t _gender);
-void load_dorms(struct dorm_t *dorms, int *num_dorms); // Fungsi baru untuk memuat data asrama dari file
+void print_dorm(struct dorm_t *_dorm, int jumlah);
+void print_dorm_detail(struct dorm_t *_dorm, int jumlah);
 
 #endif
